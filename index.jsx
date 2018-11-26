@@ -3,6 +3,7 @@ import React from 'react';
 
 export class Radio extends React.Component {
   render() {
+    const {Component, ...rest} = this.props;
     const {name, selectedValue, onChange} = this.context.radioGroup;
     const optional = {};
     if(selectedValue !== undefined) {
@@ -13,15 +14,25 @@ export class Radio extends React.Component {
     }
 
     return (
-      <input
+      <Component
         {...this.props}
-        role="radio"
-        aria-checked={optional.checked}
         type="radio"
         name={name}
-        {...optional} />
+        {...rest} />
     );
   }
+};
+
+Radio.defaultProps = {
+  Component: "input"
+};
+
+Radio.propTypes = {
+  Component: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.func,
+    PropTypes.object,
+  ])
 };
 
 Radio.contextTypes = {
@@ -40,7 +51,7 @@ export class RadioGroup extends React.Component {
 
   render() {
     const {Component, name, selectedValue, onChange, children, ...rest} = this.props;
-    return <Component role="radiogroup" {...rest}>{children}</Component>;
+    return <Component {...rest}>{children}</Component>;
   }
 };
 
